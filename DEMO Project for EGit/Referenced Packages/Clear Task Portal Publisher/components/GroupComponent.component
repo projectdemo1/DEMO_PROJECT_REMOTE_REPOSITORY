@@ -1,0 +1,20 @@
+<apex:component controller="APPR_PUB.GroupController" access="global" >
+
+    <apex:attribute name="headline" type="APPR_PUB__Headline__c" required="true" 
+        description="Headline being rendered"
+        assignTo="{!h}" access="global"/>
+    <apex:attribute name="selectedNav" type="String" required="false" 
+        description="Left Nav currently selected"
+        assignTo="{!nav}" access="global"/>
+    
+    <apex:outputText value="{!description}" escape="false" style="color:black;"/>
+
+    <apex:repeat value="{!rightNavs}" var="rightNav" id="rightNav">
+       <li><a href="{!rightNav.APPR_PUB__URL__c}" target="{!IF(rightNav.APPR_PUB__Open_In_New_Window__c, '_blank', '_parent')}">
+           <apex:outputText value="{!IF(ISNULL(rightNav.APPR_PUB__Display_Name__c), rightNav.Name, rightNav.APPR_PUB__Display_Name__c )}" /></a>
+           <apex:outputPanel rendered="{!rightNav.APPR_PUB__Show_New__c}" layout="none">
+                   <font color="red"><sup>NEW!</sup></font></apex:outputPanel>
+       </li>
+    </apex:repeat>
+    
+</apex:component>

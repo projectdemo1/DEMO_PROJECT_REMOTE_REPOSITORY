@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Opportunity$Owner</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r$Current_Playbook_Stage__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r$Last_Completed_Required_Play_Name__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r$Last_Completed_Required_Play_Date__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r$Required_Percent_Complete__c</field>
+    </columns>
+    <description>Shows next required activities for open opportunities</description>
+    <filter>
+        <criteriaItems>
+            <column>Opportunity$IsClosed</column>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r$Next_Required_Play_Name__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>[Qvidian] Next Required Activities</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Qvidian_Opportunities_with_Playbooks__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$CloseDate</dateColumn>
+        <interval>INTERVAL_CURNEXT1</interval>
+    </timeFrameFilter>
+</Report>

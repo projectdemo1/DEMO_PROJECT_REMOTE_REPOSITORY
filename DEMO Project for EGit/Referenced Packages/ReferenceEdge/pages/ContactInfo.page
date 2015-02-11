@@ -1,0 +1,4 @@
+<!--Depricated-->
+<apex:page standardController="Contact" showHeader="false" sidebar="false"> 
+    <!--<apex:pageMessage severity="Info" strength="3" summary="{!$Label.Contact_Info_Summary}" rendered="{!OR(JSENCODE(contact.Referenceability_Status__c) == null, JSENCODE(contact.Referenceability_Status__c) == 'Inactive')}"/>-->
+</apex:page>

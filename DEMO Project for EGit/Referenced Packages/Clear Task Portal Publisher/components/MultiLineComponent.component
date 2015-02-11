@@ -1,0 +1,43 @@
+<apex:component access="global" >
+    <apex:attribute name="headline" type="APPR_PUB__Headline__c" 
+         required="true" description="Headline being rendered" access="global"/>
+    
+    <apex:outputPanel rendered="{!(headline.RecordType.Name = 'Multi Line')}" >
+        <div id="{!IF(headline.Vertical_Stack__c, 'uiBoxWrappervst', 'uiBoxWrapper')}" class ="{!headline.Style_Class__c}">
+            <div id="uiBoxHeader">
+                <div id="uiLeftHeader"><h1>{!headline.Name}</h1></div>
+            </div>
+            <apex:outputPanel rendered="{!NOT(ISNULL(headline.APPR_PUB__Image_Path__c))}" layout="none">             
+                <div id="uiBoxImage">
+                    <apex:outputlink value="{!headline.APPR_PUB__Image_Url__c}" target="_blank" rendered="{!NOT(ISNULL(headline.APPR_PUB__Image_Url__c))}"> 
+                        <apex:image url="{!headline.APPR_PUB__Image_Path__c}" style="border:none" />
+                    </apex:outputlink>
+                    <apex:outputPanel rendered="{!ISNULL(headline.APPR_PUB__Image_Url__c)}" layout="none">
+                        <apex:image url="{!headline.APPR_PUB__Image_Path__c}" style="border:none" />
+                    </apex:outputPanel>
+                </div>                      
+            </apex:outputPanel>
+            <div id="uiBoxContent">
+                <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(headline.APPR_PUB__Description__c))}">
+                    <p><apex:outputText escape="false" value="{!headline.APPR_PUB__Description__c}"  rendered="{!headline.APPR_PUB__Description__c != null}"/></p><br/>            
+                </apex:outputPanel>
+                <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(headline.APPR_PUB__Long_Description__c))}">
+                    <p><apex:outputText escape="false" value="{!headline.APPR_PUB__Long_Description__c}"  rendered="{!headline.APPR_PUB__Long_Description__c != null}"/></p><br/>            
+                </apex:outputPanel>
+                
+                <!-- Loop to build the links in each headline -->
+                <apex:repeat value="{!headline.Headline_Links__r}" var="headlineLinks" id="headlineLinks">
+                    <!-- this needs to be rendered if newline is true -->
+                    <apex:outputPanel rendered="{!headlineLinks.APPR_PUB__Newline__c}" layout="none" ><br/></apex:outputPanel>
+                    <a href="{!headlineLinks.APPR_PUB__URL__c}" target="{!IF(headlineLinks.APPR_PUB__Open_In_New_Window__c, '_blank', '_parent')}">
+                        <apex:outputText value="{!IF(ISNULL(headlineLinks.APPR_PUB__Display_Name__c), headlineLinks.Name, headlineLinks.APPR_PUB__Display_Name__c )}" />
+                    </a>
+                    <apex:outputPanel rendered="{!headlineLinks.APPR_PUB__Show_New__c}" layout="none">
+                        <font color="red"><sup>NEW!</sup></font></apex:outputPanel>
+                </apex:repeat>    
+            </div>            
+            <div rendered="{!IF(headline.RecordType.Name = 'Multi Line', true, false)}" id="uiFooter"></div>    
+        </div>  
+    </apex:outputPanel>  
+    
+</apex:component>

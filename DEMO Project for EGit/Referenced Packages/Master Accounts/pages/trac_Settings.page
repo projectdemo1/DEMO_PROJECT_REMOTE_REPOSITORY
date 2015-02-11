@@ -1,0 +1,42 @@
+<apex:page controller="tracMA.trac_Settings">
+
+    <apex:form id="myForm">
+    
+        <apex:pageMessages id="msg" />
+        
+        <apex:pageBlock title="Master Account Settings" mode="edit" id="myBlock"> 
+            
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton Id="btnSave" action="{!saveSettings}" value="Save" />
+                <apex:commandButton Id="btnRunJob" action="{!runJob}" value="Run Job Now" />             
+                <apex:commandButton Id="btnCreateJob" action="{!scheduleJob}" value="Schedule Job" />             
+            </apex:pageBlockButtons>   
+                                
+            <apex:pageBlockSection title="General" collapsible="false" columns="2">
+            
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Enable Real-Time Lead Matching" for="RealTimeLeadMatching" />
+                    <apex:inputField id="RealTimeLeadMatching" value="{!mySettings.tracMA__RealTimeLeadMatching__c}" />
+                </apex:pageBlockSectionItem>
+                                                                            
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="System" collapsible="false" columns="2">
+            
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Run Time" for="LastRunTime" />
+                    <apex:inputField id="LastRunTime" value="{!mySettings.tracMA__LastRunTime__c}" />
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Disable Triggers" for="DisableTriggers" />
+                    <apex:inputField id="DisableTriggers" value="{!mySettings.tracMA__Disable_Triggers__c}" />
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    
+    </apex:form>
+    
+</apex:page>

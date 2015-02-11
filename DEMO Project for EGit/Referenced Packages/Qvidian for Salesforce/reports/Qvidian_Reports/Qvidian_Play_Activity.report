@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity$Owner</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity$CloseDate</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r.Qvidian_Play_Instances__r$DateTimeCompleted__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r.Qvidian_Play_Instances__r$Required__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Opportunity$Amount</field>
+    </columns>
+    <description>Frequency of plays used in Playbooks</description>
+    <filter>
+        <criteriaItems>
+            <column>Opportunity.Q4_Opportunity_Playbooks__r.Qvidian_Play_Instances__r$Play_Status__c</column>
+            <operator>equals</operator>
+            <value>Completed</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r.Qvidian_Play_Instances__r$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>[Qvidian] Play Activity</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Qvidian_Opportunities_with_Playbooks__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <sortColumn>Opportunity.Q4_Opportunity_Playbooks__r.Qvidian_Play_Instances__r$DateTimeCompleted__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$CloseDate</dateColumn>
+        <interval>INTERVAL_CURFY</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,19 @@
+<apex:component >
+	 <apex:attribute name="companyName" description="RK company Name"  type="String" required="true"/>
+	 <apex:attribute name="showWrongBtn" description="controls display of the wrong company btn"  type="Boolean" required="true"/>
+	<apex:attribute name="teaser" description="display teaser content only"  type="Boolean" required="true"/> 
+	
+	<div class="myCompHeader">
+		<div class="myHeaderContent">
+			<div class="headerLeft" style="padding-top:13px;">
+				<span class="tabTitle">{!companyName} </span>
+			</div>
+			<div class="headerRight">
+				<apex:outputPanel rendered="{!NOT(teaser)}">
+					<apex:outputPanel rendered="{!showWrongBtn}"><a href="" class="myPopupStyle" onclick="return showUnlinkPanel()"><apex:image value="{!$Resource.rkpi2__btn1}" title="Wrong Company"/></a></apex:outputPanel>
+					<a href="" class="myPopupStyle" onclick="return showResearchNowPanel()"><apex:image value="{!$Resource.rkpi2__btn2}" title="Research Now"/></a>
+				</apex:outputPanel>
+			</div>
+		</div>
+	</div>
+</apex:component>

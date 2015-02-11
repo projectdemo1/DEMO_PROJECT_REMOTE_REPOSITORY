@@ -1,0 +1,93 @@
+<!-- 
+ * ReferenceEdge
+ * 
+ * Point of Reference, Inc. - Copyright 2014 All rights reserved.
+ *
+ * @company : Point of Reference, Inc.
+ * @website : www.point-of-reference.com
+ *
+ * Disclaimer: THIS SOFTWARE IS PROVIDED "AS-IS" BY POINT OF REFERENCE ("POR"), 
+ * WITH NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE SOFTWARE, 
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. 
+ * POR SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, 
+ * MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES. POR IS NOT LIABLE FOR, 
+ * AND MAKES NO REPRESENTATIONS OR WARRANTIES REGARDING, THE ACTIONS OR OMISSIONS OF 
+ * ANY THIRD PARTIES (OR THE PRODUCTS OR SERVICES OFFERED BY ANY THIRD PARTIES) INCLUDING, 
+ * WITHOUT LIMIATION, SALESFORCE.COM. COPY, USE OR DISTRIBUTION PROHIBITED WITHOUT EXPRESS 
+ * WRITTEN CONSENT FROM COMPANY. 
+ -->
+<apex:page id="pageId" standardController="refedge__Contact_Reference_Content__c" extensions="refedge.AddNewRelatedConRefContentsController" sidebar="false">
+    <apex:pageMessages id="pgmsgId"/>
+    <apex:sectionHeader title="{!$Label.T_Related_Reference_Content_Edit}" subtitle="{!$Label.T_Related_Reference_Content}"  rendered="{!isFromContact}"/>
+    <apex:sectionHeader title="{!$Label.Associated_Contact_Edit}" subtitle="{!$Label.New_Associated_Contact}"  rendered="{!NOT(isFromContact)}"/>
+    
+    <style>
+        .pbSubheader
+        {
+            background-image : none !important;
+        }
+    </style>
+    
+    <script>
+        var lookUpWindowOpen = false;
+        var selectedConId = '';
+        var newWin = null; 
+        var popupflag = false;
+        function ShowLookup(compId){
+        	if(!lookUpWindowOpen){
+                lookUpWindowOpen = true;
+                popupflag = true;
+                newWin = window.open(encodeURI('{!$Page.AddContactLookup}?strText='+selectedConId),'Popup','height=500,width=700,left=100,top=100,resizable=no,scrollbars=yes,toolbar=no,status=no'); 
+                lookUpWindowOpen = false;  
+            } 
+        }
+        function closePopup(Id, Name){  
+            if (null != newWin){  
+                newWin.close(); 
+                if(typeof Name != 'undefined'){
+	                if(popupflag){
+	                    document.getElementById("pageId:formId:pageBlockId:pageBlockSectionId2:pbsContactId:searchContact").value = Name;
+	                    selectedConId = Id;
+	                	jsSelectedCon(selectedConId);
+	                    popupflag = false;
+	                }
+                }
+            }    
+        } 
+    </script>
+    
+    <!-- Form -->
+    <apex:form id="formId">
+        <apex:pageBlock id="pageBlockId" title="{!IF(isFromContact, $Label.T_Related_Reference_Content_Edit, $Label.Associated_Contact_Edit)}" mode="edit">
+            <apex:actionFunction name="jsSelectedCon" rerender="opContactId, pgmsgId">
+                <apex:param name="accId" assignTo="{!conRefContent.refedge__Contact__c}" value=""/>
+            </apex:actionFunction>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="{!$Label.Save}" action="{!save}"/>
+                <apex:commandButton value="{!$Label.Cancel}" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection id="pageBlockSectionId1" columns="1" title="{!$Label.Information}" rendered="{!isFromContact}">
+                <apex:outputField value="{!conRefContent.refedge__Contact__c}"/>
+                <apex:inputField value="{!conRefContent.refedge__Reference_Content__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="pageBlockSectionId2" columns="1" title="{!$Label.Information}" rendered="{!NOT(isFromContact)}">
+                <apex:outputField value="{!conRefContent.refedge__Reference_Content__c}"/>
+                <apex:pageBlockSectionitem id="pbsContactId">
+                    <apex:outputLabel value="{!$ObjectType.refedge__Contact_Reference_Content__c.fields.refedge__Contact__c.label}"/>
+                    <apex:outputPanel id="opContactId">
+                        <apex:actionRegion >
+                            <div style="float:left" class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText id="searchContact" value="{!conName}" style="margin-left:0px;width:200px;"/>&nbsp;&nbsp;
+                            </div>
+                            <div style="float:left">
+                            <apex:image url="{!$Resource.refedge__lookupIconImage}" height="16px" width="16px" style="cursor:pointer;" onclick="ShowLookup('pageId:formId:pageBlockId:pageBlockSectionId2:pbsContactId:searchContact');"/>
+                            </div>
+                        </apex:actionRegion>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionitem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

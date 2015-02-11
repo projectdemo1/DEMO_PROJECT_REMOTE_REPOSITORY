@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Agreement</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Agreement</shortDescription>
+        <value>Agreement</value>
+    </labels>
+    <labels>
+        <fullName>AgreementName</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Agreement Name</shortDescription>
+        <value>Agreement Name</value>
+    </labels>
+    <labels>
+        <fullName>Attachments</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Attachments</shortDescription>
+        <value>Attachments</value>
+    </labels>
+    <labels>
+        <fullName>Cancel</fullName>
+        <categories>Button Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>ChooseFilterCriteria</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Choose Filter Criteria</shortDescription>
+        <value>Choose Filter Criteria</value>
+    </labels>
+    <labels>
+        <fullName>CreatedDate</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Created Date</shortDescription>
+        <value>Created Date</value>
+    </labels>
+    <labels>
+        <fullName>EMail</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>eMail</shortDescription>
+        <value>eMail</value>
+    </labels>
+    <labels>
+        <fullName>ESignatureInformation</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>eSignature Information</shortDescription>
+        <value>eSignature Information</value>
+    </labels>
+    <labels>
+        <fullName>FileName</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>File Name</shortDescription>
+        <value>File Name</value>
+    </labels>
+    <labels>
+        <fullName>ImageTitleDown</fullName>
+        <categories>Image Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Image Title Down</shortDescription>
+        <value>Down</value>
+    </labels>
+    <labels>
+        <fullName>ImageTitleUp</fullName>
+        <categories>Image Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Image Title Up</shortDescription>
+        <value>Up</value>
+    </labels>
+    <labels>
+        <fullName>ModifiedDate</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Modified Date</shortDescription>
+        <value>Modified Date</value>
+    </labels>
+    <labels>
+        <fullName>Next</fullName>
+        <categories>Button Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>OrderAttachments</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Order Attachments</shortDescription>
+        <value>Order Attachments</value>
+    </labels>
+    <labels>
+        <fullName>Previous</fullName>
+        <categories>Button Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Previous</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>Relationship</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Relationship</shortDescription>
+        <value>Relationship</value>
+    </labels>
+    <labels>
+        <fullName>Select</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Select</shortDescription>
+        <value>Select</value>
+    </labels>
+    <labels>
+        <fullName>SelectAttachments</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Select Attachments</shortDescription>
+        <value>Select Attachments</value>
+    </labels>
+    <labels>
+        <fullName>Send</fullName>
+        <categories>Button Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Send</shortDescription>
+        <value>Send</value>
+    </labels>
+    <labels>
+        <fullName>SendForESignature</fullName>
+        <categories>Title</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Send for eSignature</shortDescription>
+        <value>Send For eSignature</value>
+    </labels>
+    <labels>
+        <fullName>ShowAmendRenewAttachments</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Show Amend Renew Attachments</shortDescription>
+        <value>Show attachments from amendments and renewals</value>
+    </labels>
+    <labels>
+        <fullName>ShowChildAttachments</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Show Child Attachments</shortDescription>
+        <value>Show attachments from child agreements</value>
+    </labels>
+    <labels>
+        <fullName>ShowParentAttachments</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Show Parent Attachments</shortDescription>
+        <value>Show attachments from parent agreement</value>
+    </labels>
+    <labels>
+        <fullName>ShowRelatedAttachments</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Show Related Attachments</shortDescription>
+        <value>Show attachments from related agreements</value>
+    </labels>
+    <labels>
+        <fullName>ShowSiblingAttachments</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Show Sibling Attachments</shortDescription>
+        <value>Show attachments from sibling agreements</value>
+    </labels>
+    <labels>
+        <fullName>Size</fullName>
+        <categories>Label</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Size</shortDescription>
+        <value>Size</value>
+    </labels>
+    <labels>
+        <fullName>StatusMessage</fullName>
+        <categories>Message</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Status Message</shortDescription>
+        <value>Refreshing... Please wait</value>
+    </labels>
+</CustomLabels>

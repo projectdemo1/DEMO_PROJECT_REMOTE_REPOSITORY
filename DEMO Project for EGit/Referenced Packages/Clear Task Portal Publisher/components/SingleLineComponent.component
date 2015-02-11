@@ -1,0 +1,25 @@
+<apex:component access="global" >
+    <apex:attribute name="headline" type="APPR_PUB__Headline__c" 
+         required="true" description="Headline being rendered" access="global"/>
+
+    <apex:outputPanel rendered="{!IF(headline.RecordType.Name = 'Single Line' && headline.APPR_PUB__Image_Path__c != null, true, false)}" >
+        <div id="{!IF(headline.Vertical_Stack__c, 'imageBoxWrapperimgvst', 'imageBoxWrapper')}" class="{!headline.Style_Class__c}" >            
+            <div id="uiSingleImage">
+                <!-- Display if image has a destination link -->
+                <apex:outputlink value="{!headline.APPR_PUB__Image_Url__c}" target="_blank" rendered="{!IF(headline.APPR_PUB__Image_Url__c != null, true, false)}"> <apex:image url="{!headline.APPR_PUB__Image_Path__c}"/></apex:outputlink>
+                <!-- Display if image does not have a destination link -->
+                <apex:image url="{!headline.APPR_PUB__Image_Path__c}" rendered="{!IF(headline.APPR_PUB__Image_Url__c == '', true, false)}"/>
+            </div>  
+        </div>    
+    </apex:outputPanel>
+    
+    <!-- Display single line text box -->
+    <apex:outputPanel rendered="{!IF(headline.RecordType.Name = 'Single Line' && headline.APPR_PUB__Image_Path__c == '', true, false)}" >               
+        <div id="{!IF(headline.Vertical_Stack__c, 'textBoxWrappervst', 'textBoxWrapper')}" class="{!headline.Style_Class__c}" >
+    
+            <div id="uiSingleText"><p><apex:outputText escape="false" value="{!headline.APPR_PUB__Description__c}{!headline.APPR_PUB__Style_Class__c}"  rendered="{!IF(headline.APPR_PUB__Description__c != null, true, false)}"/>
+            <apex:outputText escape="false" value="{!headline.APPR_PUB__Long_Description__c}" rendered="{!IF(headline.APPR_PUB__Long_Description__c != null, true, false)}" /></p></div>
+            <div id="uiFooter"></div>
+        </div>    
+    </apex:outputPanel>
+</apex:component>

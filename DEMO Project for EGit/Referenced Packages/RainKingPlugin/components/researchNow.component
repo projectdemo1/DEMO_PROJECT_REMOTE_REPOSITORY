@@ -1,0 +1,34 @@
+<apex:component >
+	<apex:attribute name="company" description="the Company"  type="String" required="true"/>
+	<apex:attribute name="contact" description="the Contact"  type="String" required="true"/>
+	<apex:attribute name="user" description="the User"  type="String" required="true"/>
+	
+	<div class="researchNowBox">
+		<div class="unlinkHeader">
+			<div class="unlinkHeaderLeft">Tell us about your research request</div>
+			<div class="unlinkHeaderRight"><a href=""  onclick="return hideResearchNowPanel()"><apex:image style="cursor: pointer;" value="{!$Resource.rkpi2__close}" alt="Close Panel" /></a></div>
+		</div>
+		<div class="researchNowBody">
+			<div class="researchNowBodyLeft">
+				<table>
+					<tr>
+						<td valign="top" width="50"><apex:image value="{!$Resource.rkpi2__lightning}" /></td>
+						<td>
+							Do you have a specific research request?  Do you need to report a data discrepancy?
+							<br/><br />
+							Please explain your request in as much detail as possible.  We will work on it immediately and let you know when we have a resolution.
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="researchNowBodyRight">
+				Explain in detail your Research Request:<br/>
+				<textarea class="researchNowText" style="width:100%;height:100px;" /><p/>
+				<div>
+					<input class="researchNowSubmitBtn" disabled="true" type="button" value="Submit Research Now Request" onclick="handleResearchNow()" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="height:20px;" />
+</apex:component>

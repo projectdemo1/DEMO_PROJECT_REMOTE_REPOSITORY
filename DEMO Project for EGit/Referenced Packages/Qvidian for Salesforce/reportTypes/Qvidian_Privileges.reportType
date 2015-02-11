@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <baseObject>Qvidian_User__c</baseObject>
+    <category>other</category>
+    <deployed>true</deployed>
+    <description>Shows all Qvidian users and their application permissions</description>
+    <label>[Qvidian] Users</label>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ManagePlaybooks__c</field>
+            <table>Qvidian_User__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ManageCRM__c</field>
+            <table>Qvidian_User__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ManageContent__c</field>
+            <table>Qvidian_User__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ManageHomePage__c</field>
+            <table>Qvidian_User__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ManageUsers__c</field>
+            <table>Qvidian_User__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>UsePlaybooks__c</field>
+            <table>Qvidian_User__c</table>
+        </columns>
+        <masterLabel>Qvidian User</masterLabel>
+    </sections>
+</ReportType>

@@ -1,0 +1,17 @@
+<apex:component >
+	<apex:attribute name="isContact" description="true if contact - false if company"  type="Boolean" required="true"/> 
+	
+	<div style="height:375px;width:100%;">
+		<apex:outputPanel rendered="{!isContact}">
+			<div style="margin-left:auto;margin-right:auto;width:600px;">
+				<a href="mailto:helpmenow@rainkingonline.com?Subject=SalesForce - Full Access Request"><apex:image value="{!$Resource.rkpi2__noTokenContact}" /></a>	
+			</div>
+		</apex:outputPanel>
+		<apex:outputPanel rendered="{!NOT(isContact)}">
+			<div style="margin-left:auto;margin-right:auto;width:600px;">
+				<a href="mailto:helpmenow@rainkingonline.com?Subject=SalesForce - Full Access Request"><apex:image value="{!$Resource.rkpi2__noTokenCompany}" /></a>	
+			</div>
+		</apex:outputPanel>
+	</div>
+
+</apex:component>

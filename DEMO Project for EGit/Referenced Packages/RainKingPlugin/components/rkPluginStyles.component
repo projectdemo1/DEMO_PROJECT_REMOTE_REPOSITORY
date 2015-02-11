@@ -1,0 +1,374 @@
+<apex:component >
+	<style>
+    	body {
+    		background:#ffffff; 
+    		color:#385F81; 
+    		font-size:13px; 
+    		font-family: arial, sans-serif;
+    	}   	
+    	body .bEditBlock .pbHeader, body .bLayoutBlock .pbHeader, body .apexp .bPageBlock.apexDefaultPageBlock .pbHeader {
+		    padding: 0;
+		    height: 0;
+		    border-bottom: 0px solid #FFFFFF;
+		}
+		body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+		    border-width: 0 0 0 0 ;
+		    border-style: none none none none;
+		}
+		form {
+    		height: 0;
+		}   	    	
+    	.spinner {
+    		display:none;
+    	}
+    	.spinner2 {
+    		display:none;
+    	}
+    	.secondaryPalette.bPageBlock {
+    		height:675px;
+    	}   	
+    	.leadTab .listViewport .subNav .linkBar, .leadTab .mComponent .cHeader, .leadTab .genericTable, .leadTab .bSubBlock, .leadTab .bPageBlock {
+    		height: 0;
+    		background-color: #ffffff;
+		}
+		.bEditBlock .pbHeader > table, .apexp .bPageBlock.apexDefaultPageBlock .pbHeader > table, #ep.bLayoutBlock .pbHeader > table {
+		    border-top: 0px solid #ffffff;
+		    border-bottom: 0px solid #ffffff;
+		}
+    	/* Tabs */
+    	.rich-tab-header {
+    		width:170px;
+    		font-size:14px;
+    	}
+    	.rich-tabpanel-content {
+    		background-color:#DDE7EE;
+    	}
+    	.pbBody td .rich-tab-active {
+    		background-color:#dee6ee; 
+    		background-image:none;
+    		color:#2e4d69;
+    	}
+    	.pbBody td .inactiveTab {
+    		width:170px; 
+    		background-color: #426f97; 
+    		background-image:none; 
+    		color:#ffffff;
+    		font-size:14px;
+    	}
+    	/* Header */
+    	.myHeader {
+    		padding-right:10px;
+    		min-width:750px;
+    		height:40px;
+    	}
+    	.myCompHeader {
+    		padding-right:10px;
+    		min-width:750px;
+    		height:40px;
+    	}
+    	.myHeaderContent {
+    		float:left; 
+    		width:100%;
+    	}
+		.headerLeft {
+			float:left;
+		}
+		.tabTitle, .sectionTitle { 
+			color:#385F81;
+			font-weight:bold; 
+			font-size:16px; 
+			font-family: arial, sans-serif;
+		}
+  		.subTitle { 
+  			color:#385F81;
+  			font-weight:bold;
+  			font-size:13px; 
+  			font-family: arial, sans-serif;
+  		}
+		.headerRight {
+			float:right;
+			margin-right:10px;
+		}
+		/* Content Boxes
+		---------------------------------------------------- */		
+		.content {
+			overflow-x:hidden;
+			overflow-y:auto;
+			padding:10px 10px 10px 10px;
+			width:97%;
+			height:500px;
+			border:solid thin #f5f5f5;
+			background-color:#ffffff;
+			box-shadow: 3px 3px 3px #4a6fa6;
+			font-size:12px;
+			margin: 2px;
+		}
+		.contactSection {
+			padding-bottom:5px;
+			color:#385F81; 
+			font-family: arial, sans-serif;
+		}
+		.contentHeader {
+			margin-bottom:5px;
+			padding:5px;
+			height:15px;
+			background-color:#2e4d69;
+			color:#ffffff;
+			font-weight:bold;
+		}
+		.contentScrolling {
+			overflow-y:auto;
+			padding:5px;
+			width:97%;
+			color:#000000;
+		}
+		.contactSection td a{
+			color:#0f5bea;
+		}
+		/* Lookup Form when contact is not found in RK
+		---------------------------------------------------- */
+		.lookupContact {
+			margin:15px;
+			padding:15px;
+			width:95%;
+			height:600px;;
+			background-color:#dee6ee;
+		}
+		.lookupContact .buttonStyle {
+			display:block;
+			font-size:16px;
+		}
+		/* Fade In Div
+		---------------------------------------------------- */
+		.fadeIn {
+			clear:both;
+			margin:1px;
+			opacity:0;
+			-webkit-animation:fadeIn ease-in 1;
+			-moz-animation:fadeIn ease-in 1;
+			animation:fadeIn ease-in 1;
+			-webkit-animation-fill-mode:forwards;
+			-moz-animation-fill-mode:forwards;
+			animation-fill-mode:forwards;
+		}
+		.fadeIn-1s {
+			-webkit-animation-duration:1s;
+			-moz-animation-duration:1s;
+			animation-duration:1s;
+		}
+		.fadeIn-Delay-2s {
+			-webkit-animation-delay:1s;
+			-moz-animation-delay:1s;
+			animation-delay:1s;
+		}
+		/* Key Frames
+		---------------------------------------------------- */
+		@-webkit-keyframes fadeIn { 
+			from {opacity:0;} 
+			to {opacity:1; } 
+		}
+		@-moz-keyframes fadeIn { 
+			from { opacity:0; } 
+			to { opacity:1; } 
+		}
+		@keyframes fadeIn { 
+			from { opacity:0; } 
+			to { opacity:1; } 
+		}
+		/* Grids
+		---------------------------------------------------- */
+		.odd { 
+			background-color: #DBECF7;
+		}
+		.even { 
+			background-color: #FFFFFF;
+		}
+		.tblHeader {
+			width:95%;
+			font-weight:bold;
+		}
+		.tblHeaderCell {
+			float:left;
+			padding-bottom:5px;
+		}
+		.tblDivider {
+			clear:both;
+			margin-bottom:5px;
+			width:95%;
+			height:1px;
+			border-top:thin solid #2e4d69;
+		}
+		.tagLine{
+			margin:10px 10px 10px 10px;
+			padding:3px 3px 3px 3px;
+			height:15px;
+			background-color: #eceff4;
+			color: #426F97;
+			font-weight:bold;
+		}
+  		.divider{
+  			margin-left:20px;
+  			height:130px;
+  			border-left:1px solid #a5b9e7;
+  		}
+  		/* Exception Panel
+		---------------------------------------------------- */
+  		.exception {
+  			margin:20px 20px 20px 20px;
+  			padding:10px 10px 10px 10px;
+  			width:250px;
+  			height:430px;
+  			border:1px solid #c0c0c0;
+  			-webkit-border-radius: 5px;
+  			-moz-border-radius: 5px;
+  			border-radius: 5px;
+  			background-color:#f5f5f5;
+  			font-size:14px;}
+  		.exceptionImage {
+  			margin:0px 0px 0px 0px;
+  			padding:0px 0px 0px 0px;
+  			width:*;
+  			height:430px;
+  			border:0px dotted #dcdcdc;
+  			-webkit-border-radius: 5px;
+  			-moz-border-radius: 5px;
+  			border-radius: 5px;
+  		}
+  		/* Unlink Panel
+		---------------------------------------------------- */
+  		body .btn.disabledBtn {
+  			color: #c0c0c0;
+  		}
+  		.highlightRow {
+  			background-color: #ffde48;
+  		}
+  		.disableRow {
+  			background-color: #f5f5f5;
+  		}
+  		td .disableCell {
+  			color: #c0c0c0;
+  		}
+  		.unlink{
+			display:none;
+			visibility:hidden;
+			width:97%;
+			height: 0px;
+		}
+		.researchNow{
+			display:none;
+			visibility:hidden;
+			width:97%;
+			height: 0px;
+		}
+  		.unlinkBox {
+			margin:20px;
+			width:97%;
+			height:125px;
+			border:dotted 1px #c0c0c0;
+			background-color:#eeeeee;
+		}
+		.unlinkHeader {
+		    margin-top:10px; 
+		    margin-right:10px;
+		    margin-left:10px;
+			width:97%;
+			height:25px;
+		    border:solid #c0c0c0 1px;
+		    -webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+		    border-radius:5px;
+			background-color:#ffffaf;
+		}
+		.unlinkHeaderLeft {
+			float:left;
+    		padding-top: 5px;
+			padding-left: 5px;
+			color:#222;
+			font-weight:bold;
+			font-size:13px;
+			font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+		}
+		.unlinkHeaderRight {
+			float:right;
+			padding-top:5px;
+			padding-right:5px;
+		}
+		.unlinkBody {
+			width:100%;
+			height:86px;
+		}
+		.unlinkBodyLeft {
+			float:left;
+		    margin:10px;
+		    padding:10px;
+		    width:55%;
+		    height:47px;
+		    border:solid #c0c0c0 1px;
+		    -webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+		    border-radius:5px;
+		    background-color:#f5f5f5;
+		    font-size:12px;
+		    font-family: arial, sans-serif;
+		}
+		.unlinkBodyRight {
+			float:right;
+			padding-top:30px;
+			padding-right:30px;
+		    font-size:12px;
+			font-family: arial, sans-serif;
+		}
+		.researchNowBox {
+			margin-left:10px;
+			width:100%;
+			height:225px;
+			border:dotted 1px #c0c0c0;
+			background-color:#eeeeee;
+		}
+		.researchNowBody {
+			width:100%;
+			
+			margin-bottom: 20px;
+		}
+		.researchNowBodyLeft {
+			float:left;
+		    margin:10px;
+		    padding:10px;
+		    width:30%;
+		    
+		    border:solid #c0c0c0 1px;
+		    -webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+		    border-radius:5px;
+		    background-color:#f5f5f5;
+		    font-size:12px;
+		    font-family: arial, sans-serif;
+		}
+		.researchNowSuccess {
+			float:left;
+		    margin:10px;
+		    padding:10px;
+		    width:30%;
+		    
+		    border:solid #c0c0c0 1px;
+		    -webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+		    border-radius:5px;
+		    background-color:#f5f5f5;
+		    font-size:12px;
+		    font-family: arial, sans-serif;
+		}
+		.researchNowBodyRight {
+			float:right;
+			padding-top:10px;
+			padding-right:30px;
+		    font-size:12px;
+			font-family: arial, sans-serif;
+			width:55%;
+		}
+  	</style>
+  	
+  	<apex:includeScript value="{!URLFOR($Resource.rkpi2__jQuery, '/js/jquery-1.7.2.min.js')}"  />
+	<apex:includeScript value="{!URLFOR($Resource.rkpi2__jQuery, '/js/jquery-ui-1.8.22.custom.min.js')}"  />
+	<apex:stylesheet value="{!URLFOR($Resource.rkpi2__jQuery, '/css/ui-lightness/jquery-ui-1.8.22.custom.css')}"  />
+</apex:component>

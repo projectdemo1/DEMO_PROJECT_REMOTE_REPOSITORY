@@ -1,0 +1,505 @@
+<apex:page controller="refedge.ReferenceRefreshController" sidebar="false" id="pageId">
+    <c:POR_ModalLoader id="PORLoader"/>
+    <apex:stylesheet value="{!URLFOR($Resource.refedge__JqueryFiles, 'jquery-ui-1.9.2.custom.min.css')}"/>
+    <style>
+        .childDiv{
+            background-color:rgb(230, 230, 230);
+            width:100%;
+            float:left;
+            height:40px;
+            
+            padding-top:10px;
+            padding-bottom:10px;
+            border-bottom: 1px solid #bbc0c4;
+        }
+        .childDiv:hover{
+            background-color : blue;
+            color:white;
+        }
+        
+        .childDivActive{
+            background-color:blue;
+            width:100%;
+            float:left;
+            height:40px;
+            color:white;
+            padding-top:10px;
+            padding-bottom:10px;
+            border-bottom: 1px solid #bbc0c4;
+        }
+        a.notReferenceable{
+            color : red !important;
+        }
+        a{
+            color:blue;
+        }
+    </style>
+    
+    <script>
+        var object;
+        PORShowLoading();
+        jQuery(document).ready(function(){
+            PORHideLoading();
+            setOnDefault();
+        });
+        function setOnDefault(){
+        	var count1 = '{!tempObj}';
+        	
+        	if(count1 == '' || count1 == null)
+            	object=document.getElementById('pageId:formId:blockId').children[1];
+            else
+            	object=document.getElementById('pageId:formId:blockId').children[parseInt(count1)];
+            onCompleteChangeColor();
+        }
+        function getDetailsOfNextAccount1(accId,obj,refRefreshId,count){
+            object = obj;
+            //obj.style.backgroundColor = 'blue';
+            //obj.style.backgroundColor
+            
+            PORShowLoading();
+            getDetailsOfNextAccount(accId,refRefreshId,count);
+        }
+        function onCompleteChangeColor(){
+            jQuery('.myDiv').removeClass('childDivActive').addClass('childDiv');
+            //if(jQuery('.myDiv')
+            jQuery(object).removeClass('childDiv').addClass('childDivActive');
+            PORHideLoading();
+        }
+        function checkTheChildCheckBoxesForAccout(){
+            if(jQuery('.accParentCheckBox').is(":checked")){
+                jQuery('.accChildCheckBox').each(function() {
+                    jQuery(this).attr('checked', 'checked');
+                }); 
+            }
+            else{
+                jQuery('.accChildCheckBox').each(function() {
+                    jQuery(this).removeAttr('checked');
+                }); 
+            }
+        }
+        function checkTheChildCheckBoxesForContact(){
+            if(jQuery('.conParentCheckBox').is(":checked")){
+                jQuery('.conChildCheckBox').each(function() {
+                    jQuery(this).attr('checked', 'checked');
+                }); 
+            }
+            else{
+                jQuery('.conChildCheckBox').each(function() {
+                    jQuery(this).removeAttr('checked');
+                }); 
+            }
+        }
+        function showAlertMessage(){
+            var r = confirm('{!$Label.No_change_notification}');
+            if(r==true){
+                PORShowLoading();
+                saveRefRefresh();
+            }else{
+                return false;
+            }
+        }
+    </script>
+    <apex:form id="formId">
+        <apex:pageMessages />
+        <apex:actionFunction name="saveRefRefresh" action="{!saveRefRefresh}"/>
+        <apex:actionFunction name="getDetailsOfNextAccount" action="{!createDataForTheSelectedAccount}" rerender="panelId" oncomplete="onCompleteChangeColor();">
+            <apex:param name="accountId" assignTo="{!selectedAccountId}" value=""/>
+            <apex:param name="refRefreshId" assignTo="{!selectedReferenceRefreshRecordId}" value=""/>
+             <apex:param name="tempObj" assignTo="{!tempObj}" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="showMoreRecords" status="status" action="{!showMoreRecords}" rerender="panelId,rightPanel" oncomplete="setOnDefault();"/>
+        
+        <apex:outputPanel rendered="{!referenceAccounts.size = 0}">
+            <apex:pageMessage severity="INFO" strength="3" summary="{!$Label.No_More_Reference_Profiles_to_Update}"/>
+            <apex:outputPanel >
+                <apex:commandButton value="{!$Label.Back_to_Home}" action="{!returnHomePage}" />
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:actionStatus id="status" onstart="PORShowLoading()" onstop="PORHideLoading()" />
+        <apex:outputPanel rendered="{!referenceAccounts.size>0}">
+            <apex:outputPanel style="width:100%;" layout="block" id="rightPanel">
+                <apex:outputPanel id="blockId" layout="block" style="width:20%;float:left;border: 1px solid #bbc0c4;border-radius: 5px;">
+                    <div style="width:100%;float:left;height:50px;border-bottom: 1px solid #bbc0c4;background-color:rgb(230, 230, 230);padding-top:10px;padding-bottom:10px;font-size: 18px;text-align:center;">
+                        <apex:outputLabel style="font-weight:bold;" value="{!$Label.Your_Reference_Accounts}"/>
+                    </div>
+                    <apex:repeat value="{!referenceAccounts}" var="referenceAccount">
+                        <div class="childDiv myDiv"  onclick="getDetailsOfNextAccount1('{!referenceAccount.accountId}',this,'{!referenceAccount.referenceRefreshId}','{!referenceAccount.count}');return false;">
+                            <div style="width:100%;float:left;margin-left: 10px;">
+                                <apex:outputLabel style="font-weight:bold;" value="{!referenceAccount.accountName}"/>
+                            </div>
+                            <div style="width:100%;float:left;margin-left: 10px;">
+                                <apex:outputLabel rendered="{!!ISBLANK(referenceAccount.lastValidator)}" value="{!$Label.Last_Validated_by} {!referenceAccount.lastValidator}"/>
+                            </div>
+                            <div style="width:100%;float:left;margin-left: 10px;">
+                                <apex:outputLabel value="on" rendered="{!!ISBLANK(referenceAccount.lastValidatedDate)}"/>
+                                <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                                    <apex:param value="{!referenceAccount.lastValidatedDate}" /> 
+                                </apex:outputText>
+                            </div>
+                        </div>
+                    </apex:repeat>
+                    <apex:outputPanel rendered="{!hasMoreAccounts}" style="width:100%;float:left;height: 50px;text-align: center;" layout="block">
+                        <div style="padding-top: 14px;color: rgb(86, 86, 252);font-size: 18px;text-decoration: underline;">
+                            <apex:outputLabel value="{!$Label.Show_me_more_Accounts}" onclick="showMoreRecords();" style="cursor: pointer;"/>
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!showNextPrevious}" style="width:100%;float:left;" layout="block">
+                        <apex:commandLink status="status" rendered="{!showPrevLink}" value="previous" style="float:left;" action="{!prevRecords}" rerender="panelId,rightPanel"/>
+                        <apex:commandLink status="status" rendered="{!showNextLink}" value="next" style="float:right;" action="{!nextRecords}" rerender="panelId,rightPanel"/>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" style="width:75%;float:left; border-left: 2px solid gray;" id="panelId">
+                    <!-- Account Block -->
+                    <div style="width:100%;float:left;margin-bottom: 2%;">
+                        <div style="width:100%;float:left;margin-bottom: 2%;">
+                            <div style="width:70%;float:left;padding-left: 5%;">    
+                                <div style="width:30%;float:left;font-size: 20px;font-weight: bold;">
+                                    {!accountName}
+                                </div>
+                                
+                            </div>
+                            <div style="width:20%;float:left;">
+                                <div style="width:100%;float:left;font-weight: bold;">
+                                    {!$Label.No_Change}
+                                </div>
+                                <div style="width:100%;float:left;">
+                                    <apex:inputCheckbox styleclass="accParentCheckBox" onchange="checkTheChildCheckBoxesForAccout();return false;"/>
+                                </div>
+                            </div>
+                        
+                        </div>
+                        <apex:repeat value="{!attributeWrapperList}" var="attWrapper">
+                            
+                            <apex:outputPanel rendered="{!attWrapper.isFromMapping}">
+                                <div style="width:100%;float:left;border-top:1px solid #dbdbdb;margin-left: 5%;">
+                                    <div style="width:20%;float:left;margin-left: 10%;text-align:left;min-height:30px;">
+                                        <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 12px;">
+                                            {!attWrapper.labelName}
+                                        </div>
+                                    </div>
+                                    <div style="width:40%;float:left;text-align:left;min-height:30px;">
+                                        <div style="padding-top: 2%;padding-bottom: 3%;">
+                                            {!attWrapper.attributes}
+                                        </div>
+                                    </div>
+                                    <div style="width:10%;float:left;min-height:30px;">
+                                        <div style="padding-top: 2%;padding-bottom: 3%;">
+                                            <apex:inputCheckbox styleClass="accChildCheckBox" value="{!attWrapper.noChange}"/>
+                                        </div>
+                                    </div>
+                                    <div style="float:left;min-height:30px;">
+                                        <div style="padding-top: 2%;padding-bottom: 3%;">
+                                            <apex:commandLink value="{!$Label.Update}"  action="{!gotoMappingRecordsEditPageForAccount}" >
+                                                <apex:param name="attmapId" assignTo="{!selectedMappingId}" value="{!attWrapper.parentAttributeMappingId}"/>
+                                            </apex:commandLink>
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                        
+                        <apex:repeat value="{!accountMappingWrapper}" var="accMappingWrapper">
+                            <div style="width:100%;float:left;border-top:1px solid #dbdbdb;margin-left: 5%;">
+                                <div style="width:20%;float:left;margin-left: 10%;text-align:left;min-height:30px;">
+                                    <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 12px;">
+                                        {!accMappingWrapper.labelName}
+                                    </div>
+                                </div>
+                                <div style="width:40%;float:left;text-align:left;min-height:30px;">
+                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+                                        
+                                    </div>
+                                </div>
+                                <div style="width:10%;float:left;min-height:30px;">
+                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+                                        <apex:inputCheckbox styleClass="accChildCheckBox" value="{!accMappingWrapper.noChange}"/>
+                                    </div>
+                                </div>
+                                <div style="float:left;min-height:30px;">
+                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+                                        <apex:commandLink value="{!$Label.Update}"  action="{!gotoMappingRecordsEditPageForAccount}" >
+                                            <apex:param name="attmapId" assignTo="{!selectedMappingId}" value="{!accMappingWrapper.attMappingId}"/>
+                                        </apex:commandLink> 
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        <apex:outputPanel >
+                            <div style="width:100%;float:left;border-top:1px solid #dbdbdb;margin-left: 5%;">
+                                <div style="width:20%;float:left;margin-left: 10%;text-align:left;min-height:30px;">
+                                    <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 12px;">
+                                        {!$Label.Account} {!$Label.Referenceability}
+                                    </div>
+                                </div>
+                                <div style="width:40%;float:left;text-align:left;min-height:30px;">
+                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+                                        {!accountReferenceability}
+                                    </div>
+                                </div>
+                                <div style="width:10%;float:left;min-height:30px;">
+                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+                                        <apex:inputCheckbox styleClass="accChildCheckBox"/>
+                                    </div>
+                                </div>
+                                <div style="float:left;min-height:30px;">
+                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+                                        <apex:commandLink value="{!$Label.Update}" action="{!goToAddReferenceabilityForAccount}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <div style="width:100%;float:left;padding-bottom:2%;">
+                            <div style="width:100%;float:left;border-top:1px solid #dbdbdb;margin-left: 5%;">
+                                <div style="width:20%;margin-left: 10%;float:left;text-align:left;min-height:30px;">
+                                    <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 12px;">
+                                        {!$Label.Account} {!$Label.Attributes}
+                                    </div>
+                                </div>
+                                <div style="width:40%;float:left;text-align:left;min-height:30px;">
+                                </div>
+                                <div style="width:10%;float:left;min-height:30px;">
+                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+                                        <apex:inputCheckbox styleClass="accChildCheckBox" />
+                                    </div>
+                                </div>
+                                <div style="float:left;min-height:30px;">
+                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+                                        <apex:commandLink value="{!$Label.Update}" action="{!goToAddLabelAttributePageForAccount}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <apex:repeat value="{!attributeWrapperList}" var="attWrapper">
+                                <apex:outputPanel rendered="{!!attWrapper.isFromMapping}" >
+                                    
+                                    <div style="width:100%;float:left;border-top:1px solid #dbdbdb;margin-left: 5%;">
+                                        <div style="width:20%;margin-left: 10%;float:left;text-align:left;min-height:30px;">
+                                        </div>
+                                        <div style="width:20%;float:left;text-align:left;min-height:30px;">
+                                            <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 10px;">
+                                                {!attWrapper.labelName}
+                                            </div>
+                                        </div>
+                                        <div style="width:40%;float:left;text-align:left;min-height:30px;">
+                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+                                                {!attWrapper.attributes}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:repeat>
+                        </div>
+                        <div style="width:70%;float:left;Color:red;padding-left: 5%;">
+                            <apex:commandLink action="{!accountIsNotRef}" status="status" rerender="panelId" styleClass="notReferenceable" value="{!accountName} {!$Label.is_no_longer_Referenceable}">
+                            </apex:commandLink>
+                        </div>
+                        
+                        <apex:outputPanel id="accountNotReferenceablePannel">
+                            <apex:outputPanel style="width:100%;margin-left: 15%;float:left;padding-bottom:5%;padding-top:3%;" layout="block" rendered="{!accountNotReferenceable}">
+                                <div>
+                                    <apex:outputLabel value="{!SUBSTITUTE($Label.Referenceable_help_msg, '@@@', $Label.Account)}"/>
+                                    <apex:commandLink style="padding-left: 200px;" status="status" value="{!$Label.Cancel}" action="{!accountIsRef}" rerender="panelId"/>
+                                </div>
+                                <div>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block" style="position: relative;height: 100%;">
+                                        <div class="requiredBlock" style="position: absolute;left: -4px;width: 3px;top: 1px;bottom: 1px;background-color: #c00;"></div>
+                                        <apex:inputTextArea rows="8" cols="100" value="{!accountNotReferenceableReason}"/>
+                                    </apex:outputPanel>
+                                </div>
+                            
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        
+                    </div>
+                    <!-- For Contact block -->
+                    <apex:outputPanel rendered="{!contacts.size>0}" layout="block" style="width:100%;float:left;margin-bottom: 2%;border-top:1px solid black;margin-left:5%;padding-top:3%;">
+                        <div style="width:100%;float:left;margin-bottom: 2%;">
+                            <div style="width:70%;float:left;font-size: 20px;font-weight: bold;">   
+                                {!$Label.Contacts}
+                            </div>
+                            <div style="width:20%;float:left;">
+                                <div style="width:100%;float:left;font-weight: bold;">
+                                    {!$Label.No_Change}
+                                </div>
+                                <div style="width:100%;float:left;">
+                                    <apex:inputCheckbox styleClass="conParentCheckBox" onchange="checkTheChildCheckBoxesForContact();return false;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <apex:repeat value="{!contacts}" var="contact">
+                            <div style="width:100%;float:left;margin-bottom: 2%;border-top:1px solid black;padding-top:3%;margin-top: 1%;">
+                                <div style="width:100%;float:left;">
+                                    <div style="font-size:14px;width:30%;float:left;font-weight:bold;">
+                                        {!contact.contactName}
+                                    </div>
+                                    
+                                </div>
+                                
+                                
+                                <apex:repeat value="{!contact.mappings}" var="mapping">
+                                    <div style="width:100%;float:left;border-top:1px solid #dbdbdb;">
+                                        <div style="width:20%;float:left;margin-left: 10%;text-align:left;min-height:30px;">
+                                            <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 12px;">
+                                                {!mapping.labelName}
+                                            </div>
+                                        </div>
+                                        <div style="width:40%;float:left;text-align:left;min-height:30px;">
+                                            
+                                        </div>
+                                        <div style="width:10%;float:left;min-height:30px;">
+                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+                                                <apex:inputCheckbox styleClass="conChildCheckBox" value="{!mapping.noChange}"/>
+                                            </div>
+                                        </div>
+                                        <div style="float:left;min-height:30px;">
+                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+                                                    <apex:commandLink value="{!$Label.Update}"  action="{!gotoMappingRecordsEditPageForContact}" >
+                                                        <apex:param name="attmapId" assignTo="{!selectedMappingId}" value="{!mapping.attMappingId}"/>
+                                                        <apex:param name="conId" assignTo="{!selectedContactId}" value="{!contact.contactId}"/>
+                                                    </apex:commandLink> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:repeat>
+                                <apex:repeat value="{!contact.attributes}" var="attWrapper">
+                                	
+                                    <apex:outputPanel rendered="{!attWrapper.isFromMapping}" layout="block" style="width:100%;float:left;border-top:1px solid #dbdbdb;">
+                                        <div style="width:20%;float:left;margin-left: 10%;text-align:left;min-height:30px;">
+                                            <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 12px;">
+                                                {!attWrapper.labelName}
+                                            </div>
+                                        </div>
+                                        <div style="width:40%;float:left;text-align:left;min-height:30px;">
+                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+                                                {!attWrapper.attributes}
+                                            </div>
+                                        </div>
+                                        <div style="width:10%;float:left;min-height:30px;">
+                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+                                                <apex:inputCheckbox styleClass="conChildCheckBox" value="{!attWrapper.noChange}"/>
+                                            </div>
+                                        </div>
+                                        <div style="float:left;min-height:30px;">
+                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+                                                
+                                                    <apex:commandLink value="{!$Label.Update}" action="{!gotoMappingRecordsEditPageForContact}" rerender="pb">
+                                                        <apex:param name="attmapId" assignTo="{!selectedMappingId}" value="{!attWrapper.parentAttributeMappingId}"/>
+                                                        <apex:param name="conId" assignTo="{!selectedContactId}" value="{!contact.contactId}"/>
+                                                    </apex:commandLink>
+                                               
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                                <div style="width:100%;float:left;border-top:1px solid #dbdbdb;">
+                                    <div style="width:20%;float:left;margin-left: 10%;text-align:left;min-height:30px;">
+                                        <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 12px;">
+                                            {!$Label.Contact} {!$Label.Referenceability}
+                                        </div>
+                                    </div>
+                                    <div style="width:40%;float:left;text-align:left;min-height:30px;">
+                                        <div style="padding-top: 2%;padding-bottom: 3%;">
+                                            {!contact.contactReferenceability}
+                                        </div>
+                                    </div>
+                                    <div style="width:10%;float:left;min-height:30px;">
+                                        <div style="padding-top: 2%;padding-bottom: 3%;">
+                                            <apex:inputCheckbox styleClass="conChildCheckBox" value="{!contact.refNoChange}"/>
+                                        </div>
+                                    </div>
+                                    <div style="float:left;min-height:30px;">
+                                        <div style="padding-top: 2%;padding-bottom: 3%;">
+                                            <apex:commandLink value="{!$Label.Update}" action="{!goToAddReferenceabilityForContact}" rerender="pb">
+                                                <apex:param name="contactId" assignTo="{!selectedContactId}" value="{!contact.contactId}"/>
+                                            </apex:commandLink>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="width:100%;float:left;padding-bottom:2%;">
+		                            <div style="width:100%;float:left;border-top:1px solid #dbdbdb;">
+		                                <div style="width:20%;margin-left: 10%;float:left;text-align:left;min-height:30px;">
+		                                    <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 12px;">
+		                                        {!$Label.Contact} {!$Label.Attributes}
+		                                    </div>
+		                                </div>
+		                                <div style="width:40%;float:left;text-align:left;min-height:30px;">
+		                                </div>
+		                                <div style="width:10%;float:left;min-height:30px;">
+		                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+		                                        <apex:inputCheckbox styleClass="conChildCheckBox" />
+		                                    </div>
+		                                </div>
+		                                <div style="float:left;min-height:30px;">
+		                                    <div style="padding-top: 2%;padding-bottom: 3%;">
+		                                        <apex:commandLink value="{!$Label.Update}" action="{!goToAddLabelAttributePageForContact}" rerender="pb">
+                                                     <apex:param name="contactId" assignTo="{!selectedContactId}" value="{!contact.contactId}"/>
+                                                 </apex:commandLink>
+		                                    </div>
+		                                </div>
+		                            </div>
+	                                <apex:repeat value="{!contact.attributes}" var="attWrapper">
+	                                    <apex:outputPanel layout="block" rendered="{!!attWrapper.isFromMapping}" style="width:100%;float:left;border-top:1px solid #dbdbdb;">
+	                                        <div style="width:100%;float:left;border-top:1px solid #dbdbdb;">
+		                                        <div style="width:20%;margin-left: 10%;float:left;text-align:left;min-height:30px;">
+		                                        </div>
+		                                        <div style="width:20%;float:left;text-align:left;min-height:30px;">
+		                                            <div style="padding-left:10%;padding-top: 3%;padding-bottom: 3%;font-weight: bold;font-size: 10px;">
+		                                                {!attWrapper.labelName}
+		                                            </div>
+		                                        </div>
+		                                        <div style="width:40%;float:left;text-align:left;min-height:30px;">
+		                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+		                                                {!attWrapper.attributes}
+		                                            </div>
+		                                        </div>
+		                                    </div>
+	                                       <!--  <div style="width:10%;float:left;min-height:30px;">
+	                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+	                                                <apex:inputCheckbox styleClass="conChildCheckBox" value="{!attWrapper.noChange}"/>
+	                                            </div>
+	                                        </div>
+	                                        <div style="float:left;min-height:30px;">
+	                                            <div style="padding-top: 2%;padding-bottom: 3%;">
+	                                                <apex:outputPanel rendered="{!!attWrapper.isFromMapping}">
+	                                                    
+	                                                </apex:outputPanel>
+	                                            </div>
+	                                        </div> -->
+	                                    </apex:outputPanel>
+	                                </apex:repeat>
+	                            </div>
+                            </div>
+                            <div style="width:70%;float:left;Color:red;">
+                                <apex:commandLink action="{!contactNotReferenceable}" status="status" rerender="panelId" styleClass="notReferenceable" value="{!contact.contactName} {!$Label.is_no_longer_Referenceable}">
+                                    <apex:param name="contactId" assignTo="{!selectedContactId}" value="{!contact.contactId}"/>
+                                </apex:commandLink>
+                            </div>
+                            <apex:outputPanel id="contactNotReferenceablePannel">
+                                <apex:outputPanel style="width:100%;margin-left: 15%;float:left;padding-bottom:5%;padding-top:3%;" layout="block" rendered="{!contact.contactNotReferenceable}">
+                                    <div>
+                                        <apex:outputLabel value="{!SUBSTITUTE($Label.Referenceable_help_msg, '@@@', $Label.Contact)}"/>
+                                        <apex:commandLink style="padding-left: 200px;" status="status" action="{!contactReferenceable}" rerender="panelId"  value="{!$Label.Cancel}">
+                                            <apex:param name="contactId" assignTo="{!selectedContactId}" value="{!contact.contactId}"/>
+                                        </apex:commandLink>
+                                    </div>
+                                    
+                                    <div>
+                                        <apex:outputPanel styleClass="requiredInput" layout="block" style="position: relative;height: 100%;">
+                                            <div class="requiredBlock" style="position: absolute;left: -4px;width: 3px;top: 1px;bottom: 1px;background-color: #c00;"></div>
+                                            <apex:inputTextArea rows="8" cols="100" value="{!contact.contactNotReferenceableReason}"/>
+                                        </apex:outputPanel>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" style="float:right;">
+                        <apex:commandButton value="{!$Label.Save}"  style="float:left;width: 90px;height: 30px;" onClick="showAlertMessage();return false;"/>
+                    </apex:outputPanel> 
+                </apex:outputPanel>
+                
+            </apex:outputPanel>
+        
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

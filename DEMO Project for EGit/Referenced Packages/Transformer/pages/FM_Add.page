@@ -1,0 +1,111 @@
+<apex:page standardController="tracFM__Field_Mapping__c" extensions="tracFM.FM_Add_Controller">
+    <apex:sectionHeader title="Add Field Mapping"/>    
+    <apex:form >
+    
+        <apex:pageMessages id="msg" />
+        
+        <apex:pageBlock id="table" mode="edit">
+
+            <apex:actionRegion immediate="true">
+                <apex:pageBlockSection collapsible="false" title="Mapping Information" columns="2">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Object" for="ObjectField" />
+                        <apex:outputPanel >
+                            <div class="requiredInput">
+                                <div class="requiredBlock" />
+                                <apex:selectList id="ObjectField" value="{!Mapping.tracFM__Object__c}" size="1" required="true">
+                                    <apex:selectOptions value="{!ObjectItems}"/>
+                                    <apex:actionSupport event="onchange" reRender="FieldValues" /> 
+                                </apex:selectList>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:actionregion>
+
+            <apex:pageBlockSection collapsible="false" columns="2" id="FieldValues">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Source Field" for="SourceField" />
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock" />
+                            <apex:selectList id="SourceField" value="{!Mapping.tracFM__Source_Field_Name__c}" size="1" required="true">
+                                <apex:selectOptions value="{!FieldItems}"/>
+                            </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                                                                          
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Target Field" for="TargetField" />
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock" />
+                            <apex:actionRegion immediate="true"> 
+                            <apex:selectList id="TargetField" value="{!Mapping.tracFM__Target_Field_Name__c}" size="1" required="true">
+                                <apex:selectOptions value="{!FieldItems}"/>
+                                <apex:actionSupport event="onchange" reRender="MappingValues" action="{!getTargetFieldType}" /> 
+                            </apex:selectList>
+                            </apex:actionregion>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>                  
+                 
+            </apex:pageBlockSection>            
+            
+            <apex:pageBlockSection collapsible="false" columns="2" id="MappingValues">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Source Value" for="SourceValue" />
+                    <apex:inputField id="SourceValue" value="{!Mapping.tracFM__Value_In__c}" required="true" />
+                </apex:pageBlockSectionItem> 
+
+                <apex:pageBlockSectionItem rendered="{!if(TargetFieldType = 'STRING',true,false)}">
+                    <apex:outputLabel value="Target Value" for="TargetValue" />
+                    <apex:inputField id="TargetValue" value="{!Mapping.tracFM__Value_Out__c}" required="true" />
+                </apex:pageBlockSectionItem> 
+
+                <apex:pageBlockSectionItem rendered="{!if(TargetFieldType = 'BOOLEAN',true,false)}">
+                    <apex:outputLabel value="Target Value" for="TargetValue" />
+                    <apex:inputCheckbox id="TargetValue" value="{!Mapping.tracFM__Value_Out__c}" required="true" />
+                </apex:pageBlockSectionItem> 
+
+                <apex:pageBlockSectionItem rendered="{!if(TargetFieldType = 'REFERENCE',true,false)}">
+                    <apex:outputLabel value="Target Value" for="TargetValue" />
+                    <apex:inputField id="TargetValue" value="{!Mapping.tracFM__Value_Out__c}" required="true" />
+                </apex:pageBlockSectionItem> 
+
+                <apex:pageBlockSectionItem rendered="{!if(TargetFieldType = 'MULTIPICKLIST',true,false)}">
+                    <apex:outputLabel value="Target Value" for="TargetPickList" />
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock" />
+                            <apex:selectList id="TargetPickList" value="{!TargetMultiValue}" size="5" required="true" multiselect="true">
+                                <apex:selectOptions value="{!TargetPickList}"/>
+                            </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                
+                <apex:pageBlockSectionItem rendered="{!if(TargetFieldType = 'PICKLIST',true,false)}">
+                    <apex:outputLabel value="Target Value" for="TargetPickList" />
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock" />
+                            <apex:selectList id="TargetPickList" value="{!Mapping.tracFM__Value_Out__c}" size="1" required="true">
+                                <apex:selectOptions value="{!TargetPickList}"/>
+                            </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                
+            </apex:pageBlockSection>                     
+
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}" immediate="true"/>
+            </apex:pageBlockButtons>
+            
+        </apex:pageBlock>
+        
+    </apex:form>
+</apex:page>

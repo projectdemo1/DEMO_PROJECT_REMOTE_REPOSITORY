@@ -1,0 +1,1 @@
+https://prod.cloud9analytics.com/dashboard2/dashboard.html?sso={!API.Session_ID}&url={!API.Partner_Server_URL_120}&pageContext=likeDealsPage&opportunityId={!Opportunity.Id}

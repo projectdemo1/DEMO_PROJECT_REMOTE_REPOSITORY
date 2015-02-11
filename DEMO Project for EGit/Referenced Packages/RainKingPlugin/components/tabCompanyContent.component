@@ -1,0 +1,196 @@
+<apex:component >
+	<apex:attribute name="rk" description="RK base data collection"  type="Object" required="true"/>
+	<apex:attribute name="lv" description="formatted last verified date"  type="Date" required="true"/>
+	<apex:attribute name="researcher" description="researcher obj"  type="Object" required="true"/>
+	<apex:attribute name="companyIntel" description="companyIntel text"  type="String" required="true"/>
+	<apex:attribute name="fye" description="fye"  type="Date" required="true"/> 
+	<apex:attribute name="renderScoops" description="render inside scoops"  type="Integer" required="true"/> 
+	<apex:attribute name="myScoops" description="inside scoops"  type="Object" required="true"/> 
+	<apex:attribute name="renderCompanyTechs" description="render companyTechs"  type="Integer" required="true"/> 
+	<apex:attribute name="companyTechs" description="companyTechs"  type="Object" required="true"/> 
+	<apex:attribute name="renderLocations" description="render locations"  type="Integer" required="true"/> 
+	<apex:attribute name="locations" description="locations"  type="Object" required="true"/> 
+	<apex:attribute name="teaser" description="display teaser content only"  type="Boolean" required="true"/> 
+	<apex:attribute name="user" description="the user"  type="String" required="true"/> 
+	
+	<c:companyHeader companyName="{!rk['companyName']}" showWrongBtn="true" teaser="{!teaser}" />
+
+<!-- 	<div class="fadeIn fadeIn-1s fadeIn-Delay-2s"> -->
+		<div class="unlink">
+			<c:unlink type="Company" />
+		</div>
+		<div class="researchNow">
+			<c:researchNow company="{!rk['companyName']}" contact="" user="{!user}" />
+		</div>
+		<div class="content" style="position:relative;">
+			<div class="contactSection" style="border:1px dotted #dcdcdc;">
+				<div class="contentHeader">Company Info</div>
+				<table>
+					<tr>
+						<td width="100"><b>HQ Addr</b></td>
+						<td width="300" rowspan="2">{!rk['companyAddress1']} <apex:outputtext value="{!rk['companyAddress2']}" rendered="rk['companyAddress2'] != null" /><br/>{!rk['companyCity']}, {!rk['companyState']} {!rk['companyZip']}<br />{!rk['country']}</td>
+						<td width="100"><b>DUNS</b></td>
+						<td>{!rk['dunsNumber']}</td>
+
+					</tr>
+					<tr>
+						<td width="100"></td>
+						<td width="100"><b>Sector</b></td>
+						<td><apex:outputText value="{!rk['sector']}" rendered="{!NOT(ISBLANK(rk['sector']))}" /></td>
+					</tr>
+					<tr>
+						<td width="100"><b>Phone</b></td>
+						<td width="300">{!rk['companyPhone']}</td>
+						<td width="100"><b>Industry</b></td>
+						<td><apex:outputText value="{!rk['industry']}" rendered="{!NOT(ISBLANK(rk['industry']))}" /></td>
+					</tr>
+					<tr>
+						<td width="100"><b>Fax</b></td>
+						<td width="300">{!rk['companyFax']}</td>
+						<td width="100"><b>Employees</b></td>
+						<td><apex:outputText value="{0, number,###,###,##0}"><apex:param value="{!value(trim(rk['employeeCount']))}" /></apex:outputText></td>
+					</tr>
+					<tr>
+						<td width="100"><b>Website</b></td>
+						<td width="300"><a href="{!rk['url']}" target="_blank">{!rk['url']}</a></td>
+						<td width="100"><b>Revenue</b></td>
+						<td>{!rk['revenue']}</td>
+					</tr>
+					<tr><td colspan="4" height="5"></td></tr>
+					<tr>
+						<td width="100" valign="top"><b>Overview</b></td>
+						<td colspan="3"><apex:outputText value="{!rk['generalInfo']}" escape="false" /></td>
+					</tr>
+				</table>
+				<div class="tagLine">The research analyst for {!rk['companyName']} is {!researcher['firstName']} {!researcher['lastName']} &nbsp;&nbsp;&nbsp;&nbsp; Last Verified: <apex:outputText value="{0,date,' ' MM-dd-yyyy}"><apex:param value="{!lv}" /></apex:outputText></div>
+			</div>
+			<div style="clear:both;height:10px;"></div>
+			
+			<apex:outputPanel rendered="{!NOT(teaser)}">
+				<div class="contactSection" style="border:1px dotted #dcdcdc;">
+					<div class="contentHeader">IT Intelligence</div>
+					<apex:image value="{!$Resource.rkpi2__trademarkCrown4}" title="RainKing value added data" style="position:relative; top:-40px; left:-9px;"/>
+					<div class="contentScrolling" style="position:relative;top:-20px;width:96%;padding-right:0;">
+	
+						<div id="intelLeft" style="float:left;width:180px;">
+							<table width="100%">
+								<tr height="30">
+									<td width="100"><b>IT Managers</b></td>
+									<td><apex:outputText value="{0, number,###,###,##0}"><apex:param value="{!value(trim(rk['itManagerCount']))}" /></apex:outputText></td>
+								</tr>
+								<tr height="30">
+									<td width="100"><b>IT Emps</b></td>
+									<td><apex:outputText value="{0, number,###,###,##0}"><apex:param value="{!value(trim(rk['itEmployeeCount']))}" /></apex:outputText></td>
+								</tr>
+								<tr height="30">
+									<td width="100"><b>FYE</b></td>
+									<td><apex:outputText value="{0,date,' 'MMM dd}"><apex:param value="{!fye}" /></apex:outputText></td>
+								</tr>
+								<tr height="30">
+									<td width="100"><b>Est. IT Budget</b></td>
+									<td>{!rk['itBudget']}</td>
+								</tr>
+							</table>
+						</div>
+						<div id="intelRight" style="padding-left:20px;width:70%;float:left;border-left:1px solid #a5b9e7;">
+							<apex:outputText value="{!companyIntel}" escape="false" />
+						</div>
+					</div>
+				</div>
+				
+				<div style="clear:both;height:10px;"></div>
+					<div class="contactSection" style="border:1px dotted #dcdcdc;">
+					<div class="contentHeader">Inside Scoops&#0153;</div>
+					<apex:image value="{!$Resource.rkpi2__trademarkCrown4}" title="RainKing value added data" style="position:relative; top:-40px; left:-9px;"/>
+					<div style="position:relative;top:-20px;padding:5px 5px 5px 5px;">	
+						<apex:outputPanel rendered="{!renderScoops == 0}">
+							Inside Scoops not available for this company.
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!renderScoops > 0}">
+							<div class="tblHeader">
+								<div class="tblHeaderCell" style="width:16%;">Date</div>
+								<div class="tblHeaderCell" style="width:16%;">Type</div>
+								<div class="tblHeaderCell" style="width:60%;">Scoop</div>
+							</div>
+							<div class="tblDivider" style="padding-left:5px;width:98%;"></div>
+							<apex:dataTable value="{!myScoops}" var="s" rowClasses="even,odd" style="padding-left:5px;">
+								<apex:column value="{!s['date']}" style="width:15%;padding:5px 5px 5px 5px;"/> 
+								<apex:column style="width:15%;padding:5px 5px 5px 5px;">
+									<apex:image value="{!$Resource.rkpi2__HotNewsType1}" rendered="{!s['typeId']=='1'}"/>
+									<apex:image value="{!$Resource.rkpi2__HotNewsType2}" rendered="{!s['typeId']=='2'}"/>
+									<apex:image value="{!$Resource.rkpi2__HotNewsType3}" rendered="{!s['typeId']=='3'}"/>
+									<apex:image value="{!$Resource.rkpi2__HotNewsType4}" rendered="{!s['typeId']=='4'}"/>
+									<apex:image value="{!$Resource.rkpi2__HotNewsType5}" rendered="{!s['typeId']=='5'}"/>
+								</apex:column>
+								<apex:column value="{!s['news']}" style="width:70%;padding:5px 5px 5px 5px;"/>
+							</apex:dataTable>
+						</apex:outputPanel>
+					</div>
+				</div>
+				
+				<div style="clear:both;height:10px;"></div>
+				<div class="contactSection" style="border:1px dotted #dcdcdc;">
+					<div class="contentHeader">Technologies</div>
+					<apex:image value="{!$Resource.rkpi2__trademarkCrown4}" title="RainKing value added data" style="position:relative; top:-40px; left:-9px;"/>
+					<div class="contentScrolling" style="position:relative;top:-20px;">
+						<apex:outputPanel rendered="{!renderCompanyTechs == 0}">
+							Technologies not available for this company.
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!renderCompanyTechs > 0}">
+							<div class="tblHeader">
+								<div class="tblHeaderCell" style="width:25%;">Group</div>
+								<div class="tblHeaderCell" style="width:65%;">Technology</div>
+							</div>
+							<div class="tblDivider" style="width:99%"></div>
+							<apex:dataTable value="{!companyTechs}" var="t" rowClasses="even,odd" style="width:99%;">
+								<apex:column value="{!t['techGroup']}" style="width:25%;padding:5px 5px 5px 5px;"/> 
+								<apex:column value="{!t['techList']}" style="width:75%;padding:5px 5px 5px 5px;"/>
+							</apex:dataTable>
+						</apex:outputPanel>
+					</div>
+				</div>
+				
+				<div style="clear:both;height:10px;"></div>
+				<div class="contactSection" style="border:1px dotted #dcdcdc;">
+					<div class="contentHeader">Locations</div>
+					<div class="contentScrolling">
+						<apex:outputPanel rendered="{!renderLocations == 0}">
+							Locations not available for this company.
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!renderLocations > 0}">
+							<div class="tblHeader">
+								<div class="tblHeaderCell" style="width:5%;">HQ?</div>
+								<div class="tblHeaderCell" style="width:28%;">Location</div>
+								<div class="tblHeaderCell" style="width:28%;">Address</div>
+								<div class="tblHeaderCell" style="width:10%;">Country</div>
+								<div class="tblHeaderCell" style="width:17%;">Phone</div>
+								<div class="tblHeaderCell" style="width:5%;">Fax</div>
+							</div>
+							<div class="tblDivider" style="width:99%"></div>
+							<apex:dataTable value="{!locations}" var="l" rowClasses="even,odd" style="width:99%;">
+								<apex:column style="width:5%;padding:5px 5px 5px 5px;">
+									<apex:image value="{!$Resource.rkpi2__check}" rendered="{!l['hq']=='true'}"/>
+								</apex:column> 
+								<apex:column value="{!l['location']}" style="width:25%;padding:5px 5px 5px 5px;"/>
+								<apex:column style="width:25%;padding:5px 5px 5px 5px;">
+									<apex:outputText value="{!l['address']}" />
+									<br/>
+									<apex:outputText value="{!l['address2']}" />
+								</apex:column>
+								<apex:column value="{!l['country']}" style="width:10%;padding:5px 5px 5px 5px;"/>
+								<apex:column value="{!l['phone']}" style="width:15%;padding:5px 5px 5px 5px;"/>
+								<apex:column value="{!l['fax']}" style="width:15%;padding:5px 5px 5px 5px;"/>
+							</apex:dataTable>
+						</apex:outputPanel>
+					</div>
+				</div>
+			</apex:outputPanel>
+			<div style="clear:both;height:10px;"></div>
+	
+			<c:nonSubscriberMsg rendered="{!teaser}" isContact="false" />
+
+		</div>
+		 
+<!-- 	</div> -->
+
+</apex:component>

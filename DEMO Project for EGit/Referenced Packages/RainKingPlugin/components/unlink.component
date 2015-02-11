@@ -1,0 +1,20 @@
+<apex:component >
+	<apex:attribute name="type" description="Contact or Company"  type="String" required="true"/>
+	
+	<div class="unlinkBox">
+		<div class="unlinkHeader">
+			<div class="unlinkHeaderLeft">Wrong {!type}?</div>
+			<div class="unlinkHeaderRight"><a href=""  onclick="return hideUnlinkPanel()"><apex:image style="cursor: pointer;" value="{!$Resource.rkpi2__close}" alt="Close Panel" /></a></div>
+		</div>
+		<div class="unlinkBody">
+			<div class="unlinkBodyLeft">
+				Click Yes if the RainKing {!type} displayed is incorrect.<br/><br/>You will be given the opportunity to link to a different RainKing {!type}.
+			</div>
+			<div class="unlinkBodyRight">
+				<apex:outputpanel id="callMethod">
+					<input type="button" value="Yes, this is the wrong {!type}" onclick="handleUnlink('{!type}')" />&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="return hideUnlinkPanel()" style="color:blue;cursor:pointer;text-decoration:underline">No</a>
+				</apex:outputpanel>
+			</div>
+		</div>
+	</div>
+</apex:component>

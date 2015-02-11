@@ -1,0 +1,12 @@
+<apex:page standardController="APPR_DGRP__Dynamic_Group__c" extensions="APPR_DGRP.DynamicGroupMemberCount"
+    standardStylesheets="false" >
+
+<apex:variable var="newUI" value="newSkinOn" rendered="{!$User.UIThemeDisplayed = 'Theme3'}" />
+<apex:variable var="oldUI" value="oldSkinOn" rendered="{!$User.UIThemeDisplayed != 'Theme3'}"/>
+
+
+    <apex:form style="{!IF(oldUI = 'oldSkinOn', 'background-color:#F3F3EC', '')}">
+        <apex:outputText value="{!count}" style="{!IF(newUI = 'newSkinOn', 'margin:-10px;', '')}" />
+        <apex:inputHidden value="{!APPR_DGRP__Dynamic_Group__c.APPR_DGRP__Group_Id__c}" />
+    </apex:form>
+</apex:page>

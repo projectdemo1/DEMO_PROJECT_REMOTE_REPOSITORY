@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Opportunity$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r.Play_Contents__r$Name</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r.Play_Contents__r$Content_Name__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.Q4_Opportunity_Playbooks__r.Play_Contents__r$Contentusagecount__c</field>
+    </columns>
+    <filter>
+        <criteriaItems>
+            <column>Opportunity.Q4_Opportunity_Playbooks__r.Play_Contents__r$Content_Source__c</column>
+            <operator>notEqual</operator>
+            <value>CRM Field</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>[Qvidian] Field Usage in Plays</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Qvidian_Opportunities_with_Content__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <sortColumn>Opportunity.Q4_Opportunity_Playbooks__r.Play_Contents__r$Contentusagecount__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Opportunity$CloseDate</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>
