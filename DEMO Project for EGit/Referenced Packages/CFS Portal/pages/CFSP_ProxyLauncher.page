@@ -1,3 +1,0 @@
-<apex:page controller="cfsp.CFSP_ProxyLauncher" action="{!checkLaunchPossibility}"  standardStylesheets="false" sidebar="false" showheader="false" contentType="application/json">
-	<apex:outputText value="{!prerequisitesReturn}" escape="false" />
-</apex:page>

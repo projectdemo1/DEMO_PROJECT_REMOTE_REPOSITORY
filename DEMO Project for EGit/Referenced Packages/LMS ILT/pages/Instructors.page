@@ -1,4 +1,0 @@
-<!-- <apex:page action="{!URLFOR($Action.Contact.List, $ObjectType.Contact)}"/> -->
-<apex:page >
-	<apex:ListViews type="User" />
-</apex:page>
